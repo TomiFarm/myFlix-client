@@ -1,33 +1,35 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {MovieCard} from '../movie-card/movie-card';
 import {MovieView} from '../movie-view/movie-view';
 
 export const MainView = () => {
-    const [movies, setMovies] = useState([
-        {
-            id: 1,
-            title: "Jurassic Park",
-            genre: "Adventure",
-            director: "Steven Spielberg",
-            image: "https://m.media-amazon.com/images/I/7146s0GzEUL._AC_UY218_.jpg"
-        },
-        {
-            id: 2,
-            title: "Indiana Jones",
-            genre: "Adventure",
-            director: "Steven Spielberg",
-            image: "https://m.media-amazon.com/images/I/81rzIG1yfaS._AC_UY218_.jpg"
-        },
-        {
-            id: 3,
-            title: "Lion King",
-            genre: "Animated",
-            director: "Jon Favreau",
-            image: "https://m.media-amazon.com/images/I/81aLWmKrNVL._AC_UY218_.jpg"
-        }
-    ]);
+    const [movies, setMovies] = useState([]);
 
     const [selectedMovie, setSelectedMovie] = useState(null);
+    useEffect(() => {
+// fetch from Heroku
+//        fetch('https://myflix-12345.herokuapp.com/movies')
+
+// fetch from Local
+        fetch('http://127.0.0.1:8080/movies')
+
+            .then((response) => response.json())
+            .then((data) => {
+                const moviesFromApi = data.map((movie) => { 
+                    return {
+                        id: movie._id,
+                        title: movie.Title,
+                        description: movie.Description,
+                        genre: movie.Genre.Name,
+                        director: movie.Director.Name,
+                        image: movie.ImagePath,
+                        featured: movie.Featured
+                    };
+                });
+                setMovies(moviesFromApi);
+            });
+    }, []);
+
 
     if (selectedMovie){
         return(
