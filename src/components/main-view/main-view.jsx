@@ -1,7 +1,7 @@
-import {useEffect, useState} from 'react';
-import {MovieCard} from '../movie-card/movie-card';
-import {MovieView} from '../movie-view/movie-view';
-import {LoginView} from '../login-view/login-view';
+import { useEffect, useState } from 'react';
+import { MovieCard } from '../movie-card/movie-card';
+import { MovieView } from '../movie-view/movie-view';
+import { LoginView } from '../login-view/login-view';
 import { SignupView } from '../signup-view/signup-view';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -21,11 +21,8 @@ export const MainView = () => {
         }
 
 // fetch from Heroku
-//        fetch('https://myflix-12345.herokuapp.com/movies')
-
-// fetch from Local
-        fetch('http://127.0.0.1:8080/movies', {
-            headers: { Authorization: `Bearer ${token}` }
+       fetch('https://myflix-12345.herokuapp.com/movies', {
+        headers: { Authorization: `Bearer ${token}` }
         })
 
             .then((response) => response.json())
@@ -43,31 +40,31 @@ export const MainView = () => {
                 });
                 setMovies(moviesFromApi);
             });
+// end fetch from Heroku
+
+// fetch from Local
+        // fetch('http://127.0.0.1:8080/movies', {
+        //     headers: { Authorization: `Bearer ${token}` }
+        // })
+
+        //     .then((response) => response.json())
+        //     .then((data) => {
+        //         const moviesFromApi = data.map((movie) => { 
+        //             return {
+        //                 id: movie._id,
+        //                 title: movie.Title,
+        //                 description: movie.Description,
+        //                 genre: movie.Genre.Name,
+        //                 director: movie.Director.Name,
+        //                 image: movie.ImagePath,
+        //                 featured: movie.Featured
+        //             };
+        //         });
+        //         setMovies(moviesFromApi);
+        //     });
+// end fetch from Local
+
     }, [token]);
-
-    // if (!user) {
-    //     return (
-    //         <>
-    //             <LoginView
-    //                 onLoggedIn={(user, token) => {
-    //                     setUser(user);
-    //                     setToken(token);
-    //                 }}
-    //             />
-    //             or
-    //             <SignupView />
-    //         </>
-    //     );
-    // }
-
-    // if (selectedMovie){
-    //     return(
-    //         <MovieView movie={selectedMovie} onBackClick={() => setSelectedMovie(null)} />
-    //     );
-    // }
-    // if (movies.length === 0){
-    //     return <div>The list is empty!</div>;
-    // }
 
     return(
         <Row className="justify-content-center text-white">
