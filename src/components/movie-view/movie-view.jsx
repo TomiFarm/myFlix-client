@@ -1,7 +1,11 @@
 import PropTypes from 'prop-types';
+import { useParams } from 'react-router';
+import { Link } from 'react-router-dom';
 
+export const MovieView = ({movies}) => {
+    const {movieId} = useParams();
+    const movie = movies.find((m) => m.id === movieId);
 
-export const MovieView = ({movie, onBackClick}) => {
     return (
         <div>
             <div>
@@ -23,7 +27,9 @@ export const MovieView = ({movie, onBackClick}) => {
                 <span>Director: </span>
                 <span>{movie.director}</span>
             </div>
-            <button onClick={onBackClick}>BACK</button>
+            <Link to={`/`}>
+                <button>BACK</button>
+            </Link>
         </div>
     );
 };
