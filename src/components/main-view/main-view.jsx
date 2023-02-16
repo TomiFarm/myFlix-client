@@ -3,6 +3,7 @@ import { MovieCard } from '../movie-card/movie-card';
 import { MovieView } from '../movie-view/movie-view';
 import { LoginView } from '../login-view/login-view';
 import { SignupView } from '../signup-view/signup-view';
+import { ProfileView } from '../profile-view/profile-view';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
@@ -67,6 +68,8 @@ export const MainView = () => {
 // end fetch from Local
 
     }, [token]);
+
+    let favorites = movies.filter(m => user.Favorites.includes(m._id));
 
     return(
         <BrowserRouter>
@@ -141,11 +144,25 @@ export const MainView = () => {
                                         {movies.map((movie) => {
                                             return (
                                                 <Col className="mb-3" key={movie.id} md={3} >
-                                                    <MovieCard movie={movie} />
+                                                    <MovieCard movie={movie} user={user} token={token} />
                                                 </Col>
                                             )
                                         })}
                                     </>
+                                )}
+                            </>
+                        }
+                    />
+                    <Route
+                        path="/profile"
+                        element={
+                            <>
+                                {!user ? (
+                                    <Navigate to="/login" replace />
+                                ) : (
+                                    <Col>
+                                        <ProfileView user={user} token={token} favorites={favorites}/>
+                                    </Col>
                                 )}
                             </>
                         }
