@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import { Link } from 'react-router-dom';
 
-export const MovieCard = ({movie, user, token}) => {
+export const MovieCard = ({movie, user, token, activeUser}) => {
 
     const addFavorite = () => {
         // ADD IF NOT ALREADY FAVORITED
@@ -33,8 +33,11 @@ export const MovieCard = ({movie, user, token}) => {
                 <Link to={`/movies/${encodeURIComponent(movie.id)}`}>
                     <Button variant="link">OPEN</Button>
                 </Link>
-                <Button onClick={addFavorite}>Add favorite</Button>
-                <Button onClick={removeFavorite}>Remove favorite</Button>
+                {!activeUser.favorites.includes(movie.id) ? (
+                    <Button onClick={addFavorite}>Add favorite</Button>
+                ) : (
+                    <Button onClick={removeFavorite}>Remove favorite</Button>
+                )}
             </Card.Body>
 
         </Card>

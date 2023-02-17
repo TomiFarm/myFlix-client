@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import Col from 'react-bootstrap/Col';
 import { MovieCard } from '../movie-card/movie-card';
 
-export const ProfileView = ({user, token, favorites}) => {
+export const ProfileView = ({user, token, favorites, activeUser}) => {
     const [users, setUsers] = useState([]);
 
     const [username, setUsername] = useState('');
@@ -23,11 +24,10 @@ export const ProfileView = ({user, token, favorites}) => {
             Birthday: birthday
         };
 
-        // NOT WORKING !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
         fetch(`https://myflix-12345.herokuapp.com/users/${user.Username}`, {
             method: 'PUT',
-            headers: { Authorization: `Bearer ${token}` },
+            headers: { Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json" },
             body: JSON.stringify(data)
         });
     };
@@ -59,19 +59,19 @@ export const ProfileView = ({user, token, favorites}) => {
         <>
             <div>
                 <span>Username: </span>
-                <span>{user.Username}</span>
+                <span>{activeUser.username}</span>
             </div>
             <div>
                 <span>Email: </span>
-                <span>{user.Email}</span>
+                <span>{activeUser.email}</span>
             </div>
             <div>
                 <span>Birthday: </span>
-                <span>{user.Birthday}</span>
+                <span>{activeUser.birthday}</span>
             </div>
             <div>
                 <span>Favorites: </span>
-                <span>{user.Favorites}</span>
+                <span>{activeUser.favorites}</span>
             </div>
 
 
@@ -128,7 +128,7 @@ export const ProfileView = ({user, token, favorites}) => {
                 {favorites.map((movie) => {
                     return (
                             <Col className="mb-3" key={movie.id} md={3} >
-                                <MovieCard movie={movie} user={user} token={token} />
+                                <MovieCard movie={movie} user={user} token={token} activeUser={activeUser}/>
                             </Col>
                         )
                     })}

@@ -17,6 +17,7 @@ export const MainView = () => {
     const [selectedMovie, setSelectedMovie] = useState(null);
     const [user, setUser] = useState(storedUser? storedUser : null);
     const [token, setToken] = useState(storedToken? storedToken : null);
+    const [activeUser, setActiveUser] = useState([]);
 
     useEffect(() => {
         if(!token) {
@@ -69,7 +70,35 @@ export const MainView = () => {
 
     }, [token]);
 
-    let favorites = movies.filter(m => user.Favorites.includes(m._id));
+    
+        fetch('https://myflix-12345.herokuapp.com/users', {
+            method: 'GET',
+            headers: { Authorization: `Bearer ${token}` }
+        }).then((response) => response.json())
+        .then((data) => {
+            const usersFromApi = data.map((user) => {
+                return {
+                    id: user._id,
+                    username: user.Username,
+                    password: user.Password,
+                    email: user.Email,
+                    birthday: user.Birthday,
+                    favorites: user.Favorites
+                };
+            });
+            let activeUserArray = usersFromApi.filter(u => user.Username.includes(u.username));
+            setActiveUser(activeUserArray[0]);
+        });
+    
+    // updateUserData();
+    // console.log(currentUserData);
+
+
+    // REMOVE CONSOLE LOGS
+    // console.log(user);
+    let favorites = movies.filter(m => activeUser.favorites.includes(m.id));
+    // console.log(activeUser.id);
+    // console.log(favorites);
 
     return(
         <BrowserRouter>
@@ -144,7 +173,7 @@ export const MainView = () => {
                                         {movies.map((movie) => {
                                             return (
                                                 <Col className="mb-3" key={movie.id} md={3} >
-                                                    <MovieCard movie={movie} user={user} token={token} />
+                                                    <MovieCard movie={movie} user={user} token={token} activeUser={activeUser}/>
                                                 </Col>
                                             )
                                         })}
@@ -161,7 +190,7 @@ export const MainView = () => {
                                     <Navigate to="/login" replace />
                                 ) : (
                                     <Col>
-                                        <ProfileView user={user} token={token} favorites={favorites}/>
+                                        <ProfileView user={user} token={token} favorites={favorites} activeUser={activeUser}/>
                                     </Col>
                                 )}
                             </>
