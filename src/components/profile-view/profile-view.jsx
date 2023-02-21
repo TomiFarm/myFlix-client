@@ -5,14 +5,10 @@ import Col from 'react-bootstrap/Col';
 import { MovieCard } from '../movie-card/movie-card';
 
 export const ProfileView = ({user, token, favorites, activeUser}) => {
-    const [users, setUsers] = useState([]);
-
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const [birthday, setBirthday] = useState('');
-    const [movies, setMovies] = useState([]);
-    const [favoriteMovie, setFavoriteMovie] = useState('');
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -29,34 +25,27 @@ export const ProfileView = ({user, token, favorites, activeUser}) => {
             headers: { Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json" },
             body: JSON.stringify(data)
+        })
+        .then(response => {
+            return response.json();
+        })
+        .then(data => {
+            localStorage.setItem('user', JSON.stringify(data));
+            window.location.reload();
+        })
+        .catch(error => {
+            console.error('There was a problem with fetch operation: ', error);
         });
     };
 
-    // fetch('https://myflix-12345.herokuapp.com/users', {
-    //     method: 'GET',
-    //     headers: { Authorization: `Bearer ${token}` }
-    // }).then((response) => response.json())
-    // .then((data) => {
-    //     const usersFromApi = data.map((user) => {
-    //         return {
-    //             id: user._id,
-    //             username: user.Username,
-    //             password: user.Password,
-    //             email: user.Email,
-    //             birthday: user.Birthday,
-    //             favorites: user.Favorites
-    //         };
-    //     });
-    //     setUsers(usersFromApi);
-    // });
-
-    
-
     return (
-        
         
         // display user information
         <>
+            
+            <div>
+                <h4>Profile:</h4>
+            </div>
             <div>
                 <span>Username: </span>
                 <span>{activeUser.username}</span>
@@ -70,10 +59,9 @@ export const ProfileView = ({user, token, favorites, activeUser}) => {
                 <span>{activeUser.birthday}</span>
             </div>
             <div>
-                <span>Favorites: </span>
-                <span>{activeUser.favorites}</span>
+                <h4>Change user information:</h4>
             </div>
-
+            
 
             <Form onSubmit={handleSubmit}>
                 <Form.Group controlId="formUsername">
@@ -121,9 +109,12 @@ export const ProfileView = ({user, token, favorites, activeUser}) => {
 
                 <Button variant="primary" type="submit">SUBMIT</Button>
             </Form>
+            
 
-            <div>FAVORITES:</div>
-           
+            <div>
+                <h4>FAVORITES:</h4>
+            </div>
+            
             <>
                 {favorites.map((movie) => {
                     return (

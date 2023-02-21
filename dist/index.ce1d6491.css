@@ -12005,6 +12005,10 @@ textarea.form-control-lg {
   }
 }
 
+.card-image {
+  max-width: 500px;
+}
+
 .navbar {
   color: #fff;
   background-color: #131212;

@@ -6,7 +6,6 @@ import { SignupView } from '../signup-view/signup-view';
 import { ProfileView } from '../profile-view/profile-view';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { NavigationBar } from '../navigation-bar/navigation-bar';
 
@@ -68,9 +67,8 @@ export const MainView = () => {
         //     });
 // end fetch from Local
 
-    }, [token]);
+}, [token]);
 
-    
         fetch('https://myflix-12345.herokuapp.com/users', {
             method: 'GET',
             headers: { Authorization: `Bearer ${token}` }
@@ -89,16 +87,11 @@ export const MainView = () => {
             let activeUserArray = usersFromApi.filter(u => user.Username.includes(u.username));
             setActiveUser(activeUserArray[0]);
         });
+
     
-    // updateUserData();
-    // console.log(currentUserData);
-
-
-    // REMOVE CONSOLE LOGS
-    // console.log(user);
+    
+// SOMETHING WEIRD IN THIS
     let favorites = movies.filter(m => activeUser.favorites.includes(m.id));
-    // console.log(activeUser.id);
-    // console.log(favorites);
 
     return(
         <BrowserRouter>
@@ -197,58 +190,6 @@ export const MainView = () => {
                         }
                     />
 
-
-                    {/* {!user ? (
-                        <Col md={5}>
-                            <LoginView
-                                onLoggedIn={(user, token) => {
-                                    setUser(user);
-                                    setToken(token);
-                                }}
-                            />
-                            or
-                            <SignupView />
-                        </Col>
-                    ) : selectedMovie ? (
-                        <Col md={8}>
-                            <MovieView
-                                movie={selectedMovie}
-                                onBackClick={() => setSelectedMovie(null)}
-                            />
-                        </Col>
-                    ) : movies.length === 0 ? (
-                        <div>The list is empty!</div>
-                    ) : (
-                        <>
-                            <Col md="12" className="mb-5">
-                                <Button
-                                    variant="primary"
-                                    onClick={() => {
-                                        setUser(null);
-                                        setToken(null);
-                                        localStorage.clear();
-                                    }}
-                                >
-                                    LOGOUT
-                                </Button>
-                            </Col>
-
-                            {movies.map((movie) => {
-                                return(
-                                    <Col key={movie.id} className="mb-3" md={3}>
-                                        <MovieCard
-                                            movie={movie}
-                                            onMovieClick={(newSelectedMovie) => {
-                                                setSelectedMovie(newSelectedMovie);
-                                            }}
-                                        />
-                                    </Col>
-                                );
-                            })}
-
-                            
-                        </>
-                    )} */}
                 </Routes>
             </Row>
         </BrowserRouter>
