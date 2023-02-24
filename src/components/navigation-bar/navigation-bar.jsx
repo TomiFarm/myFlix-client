@@ -3,12 +3,14 @@ import { Link } from 'react-router-dom';
 import './navigation-bar.scss';
 
 export const NavigationBar = ({ user, onLoggedOut }) => {
+
     return (
         <Navbar expand="lg" className="navbar">
             <Container>
                 <Navbar.Brand as={Link} to="/">
                     myFlix
                 </Navbar.Brand>
+
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="ms-auto">

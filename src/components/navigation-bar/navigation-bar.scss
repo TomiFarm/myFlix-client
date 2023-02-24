@@ -8,6 +8,10 @@
     font-size: 200%;
 }
 
-.navbar a:hover {
-    color: rgb(218, 2, 2);
+.navbar-toggler {
+    background-color: red;
+}
+
+.nav-link:hover, .nav-link:focus, .navbar-brand:hover, .navbar-brand:focus {
+    color: rgb(194, 0, 0);
 }
