@@ -18,11 +18,7 @@ export const SignupView = () => {
             Birthday: birthday
         };
 
-// fetch Remote
         fetch('https://myflix-12345.herokuapp.com/users', {
-
-// fetch Local
-        // fetch('http://127.0.0.1:8080/users', {
             method: 'POST',
             body: JSON.stringify(data),
             headers: {
@@ -81,7 +77,6 @@ export const SignupView = () => {
                 />
             </Form.Group>
 
-            
             <Button variant="primary" type="submit">SIGN UP</Button>
         </Form>
     );

@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom';
 export const MovieCard = ({movie, user, token, activeUser}) => {
 
     const addFavorite = () => {
-        // ADD IF NOT ALREADY FAVORITED
         fetch(`https://myflix-12345.herokuapp.com/users/${user.Username}/movies/${movie.id}`, {
             method: 'POST',
             headers: { Authorization: `Bearer ${token}` }
@@ -39,7 +38,6 @@ export const MovieCard = ({movie, user, token, activeUser}) => {
                     <Button onClick={removeFavorite}>Remove favorite</Button>
                 )}
             </Card.Body>
-
         </Card>
     );
 };
@@ -52,6 +50,5 @@ MovieCard.propTypes = {
         director: PropTypes.string.isRequired,
         image: PropTypes.string.isRequired,
         featured: PropTypes.bool
-    }).isRequired,
-    onMovieClick: PropTypes.func.isRequired
+    }).isRequired
 };

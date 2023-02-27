@@ -12027,4 +12027,17 @@ textarea.form-control-lg {
   color: #c20000;
 }
 
+.dropdown-menu {
+  min-width: 1rem;
+  background-color: #0000;
+}
+
+#dropdown-genre, #dropdown-director {
+  width: 100%;
+}
+
+.btn-primary {
+  --bs-btn-active-bg: #d10000;
+}
+
 /*# sourceMappingURL=index.ce1d6491.css.map */

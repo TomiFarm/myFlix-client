@@ -8,11 +8,10 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { NavigationBar } from '../navigation-bar/navigation-bar';
+import './main-view.scss';
 
-import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import ToggleButton from 'react-bootstrap/ToggleButton';
-import Button from 'react-bootstrap/Button';
 import { ToggleButtonGroup } from 'react-bootstrap';
 
 export const MainView = () => {
@@ -23,7 +22,6 @@ export const MainView = () => {
     const [token, setToken] = useState(storedToken? storedToken : null);
     const [activeUser, setActiveUser] = useState([]);
     const [favorites, setFavorites] = useState([]);
-    const [checked, setChecked] = useState(false);
     const [genreList, setGenreList] = useState([]);
     const [directorList, setDirectorList] = useState([]);
     const [moviesToRender, setMoviesToRender] = useState([]);
@@ -33,7 +31,6 @@ export const MainView = () => {
             return;
         }
 
-// fetch from Heroku
        fetch('https://myflix-12345.herokuapp.com/movies', {
         headers: { Authorization: `Bearer ${token}` }
         })
@@ -52,34 +49,8 @@ export const MainView = () => {
                     };
                 });
                 setMovies(moviesFromApi);
-                setMoviesToRender(moviesFromApi);
-
-                
+                setMoviesToRender(moviesFromApi);  
             });
-// end fetch from Heroku
-
-// fetch from Local
-        // fetch('http://127.0.0.1:8080/movies', {
-        //     headers: { Authorization: `Bearer ${token}` }
-        // })
-
-        //     .then((response) => response.json())
-        //     .then((data) => {
-        //         const moviesFromApi = data.map((movie) => { 
-        //             return {
-        //                 id: movie._id,
-        //                 title: movie.Title,
-        //                 description: movie.Description,
-        //                 genre: movie.Genre.Name,
-        //                 director: movie.Director.Name,
-        //                 image: movie.ImagePath,
-        //                 featured: movie.Featured
-        //             };
-        //         });
-        //         setMovies(moviesFromApi);
-        //     });
-// end fetch from Local
-
     }, [token]);
 
     useEffect(() => {
@@ -110,23 +81,6 @@ export const MainView = () => {
         
     });
 
-    // const handleFilter = (e) => {
-    //     setChecked(e.currentTarget.checked);
-        
-
-    //     // console.log(moviesToRender);
-    //     // let genres = movies.map(movie => movie.genre);
-    //     // console.log(genres);
-
-    //     let uniqueGenres = [...new Set(movies.map(movie => movie.genre))];
-    //     console.log(uniqueGenres);
-    //     // movies.map((movie) => {
-    //     //     return console.log(movie.genre);
-    //     // });
-
-        
-    // };
-
     useEffect(() => {
         if(!movies){
             return;
@@ -134,13 +88,10 @@ export const MainView = () => {
             let genres = movies.map(movie => movie.genre);
             let uniqueGenres = [...new Set(genres)];
             setGenreList(uniqueGenres);
-            console.log(genreList);
 
             let directors = movies.map(movie => movie.director);
             let uniqueDirectors = [...new Set(directors)];
             setDirectorList(uniqueDirectors);
-            console.log(directorList);
-
     }, [movies]);
 
     const handleFilter = (chosenFilters) => {
@@ -172,18 +123,18 @@ export const MainView = () => {
             />
             <Row>
                 
-                <DropdownButton id="dropdown-item-button" drop="end" title="Filter by">
-                    <DropdownButton id="dropdownindropdown" title="Genre">
+                <DropdownButton id="dropdown-item-button" drop="down" title="Filter by">
+                    <DropdownButton id="dropdown-genre" drop="end" title="Genre">
                         <>
-                            <ToggleButtonGroup type="checkbox" className="mb-2" onChange={handleFilter}>
+                            <ToggleButtonGroup type="checkbox" className="mb-2"  onChange={handleFilter}>
                                 {genreList.map((genre) => {
-                                    return <ToggleButton id={'tbg-check-1' + genreList.indexOf(genre)} value={genre}>{genre}</ToggleButton>
+                                    return <ToggleButton className="btn-block" id={'tbg-check-1' + genreList.indexOf(genre)} value={genre}>{genre}</ToggleButton>
                                 })}
                             </ToggleButtonGroup>
                         </>
 
                     </DropdownButton>
-                    <DropdownButton id="dorp" title="Director">
+                    <DropdownButton id="dropdown-director" drop="end" title="Director">
                         <>
                             <ToggleButtonGroup type="checkbox" className="mb-2" onChange={handleFilter}>
                                 {directorList.map((director) => {
@@ -194,7 +145,6 @@ export const MainView = () => {
                         </>
                     </DropdownButton>
                 </DropdownButton>
-
 
             </Row>
             <Row className="justify-content-center text-white">
@@ -277,7 +227,16 @@ export const MainView = () => {
                                     <Navigate to="/login" replace />
                                 ) : (
                                     <Col>
-                                        <ProfileView user={user} token={token} favorites={favorites} activeUser={activeUser}/>
+                                        <ProfileView 
+                                        user={user} 
+                                        token={token} 
+                                        favorites={favorites} 
+                                        activeUser={activeUser}
+                                        onLoggedOut={() => {
+                                            setUser(null);
+                                            setToken(null);
+                                            localStorage.clear();
+                                        }}/>
                                     </Col>
                                 )}
                             </>

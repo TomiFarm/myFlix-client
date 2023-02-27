@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import { MovieCard } from '../movie-card/movie-card';
 
-export const ProfileView = ({user, token, favorites, activeUser}) => {
+export const ProfileView = ({user, token, favorites, activeUser, onLoggedOut}) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
@@ -38,11 +38,24 @@ export const ProfileView = ({user, token, favorites, activeUser}) => {
         });
     };
 
+    const handleDeregister = (event) => {
+        event.preventDefault();
+
+        let deregisterInput = prompt('If you are sure you want to delete your account, please type in your username:');
+
+        if (deregisterInput !== activeUser.username){
+            alert('Incorrect username!');
+        } else {
+            fetch(`https://myflix-12345.herokuapp.com/users/${activeUser.username}`, {
+            method: 'DELETE',
+            headers: { Authorization: `Bearer ${token}`}
+        })
+        onLoggedOut();
+        }
+    }
+
     return (
-        
-        // display user information
         <>
-            
             <div>
                 <h4>Profile:</h4>
             </div>
@@ -62,7 +75,6 @@ export const ProfileView = ({user, token, favorites, activeUser}) => {
                 <h4>Change user information:</h4>
             </div>
             
-
             <Form onSubmit={handleSubmit}>
                 <Form.Group controlId="formUsername">
                     <Form.Label>Username:</Form.Label>
@@ -110,6 +122,11 @@ export const ProfileView = ({user, token, favorites, activeUser}) => {
                 <Button variant="primary" type="submit">SUBMIT</Button>
             </Form>
             
+            <div>
+                <p>Delete my account: </p>
+                <Button onClick={handleDeregister}>Deregister</Button>
+
+            </div>
 
             <div>
                 <h4>FAVORITES:</h4>
@@ -125,11 +142,5 @@ export const ProfileView = ({user, token, favorites, activeUser}) => {
                     })}
             </>
         </>
-        
-// update user information (username, password, email, date of birth)
-
-
-        // display favorite movies
     );
-
 };

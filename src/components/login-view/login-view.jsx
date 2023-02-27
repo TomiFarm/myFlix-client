@@ -14,11 +14,7 @@ export const LoginView = ({ onLoggedIn }) => {
             Password: password
         };
 
-// fetch Remote
         fetch('https://myflix-12345.herokuapp.com/login', {
-
-// fetch Local
-        // fetch('http://127.0.0.1:8080/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -27,7 +23,6 @@ export const LoginView = ({ onLoggedIn }) => {
         })
         .then((response) => response.json())
         .then((data) => {
-            console.log('Login response: ', data);
             if(data.user) {
                 localStorage.setItem('user', JSON.stringify(data.user));
                 localStorage.setItem('token', data.token);

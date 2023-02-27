@@ -15,8 +15,6 @@ export const MovieView = ({movies}) => {
             <Card.Body>
                 <Card.Title>{movie.title}</Card.Title>
                 <Card.Text>
-                
-            
                     <div>
                         <span>Title: </span>
                         <span>{movie.title}</span>
@@ -33,27 +31,22 @@ export const MovieView = ({movies}) => {
                         <span>Director: </span>
                         <span>{movie.director}</span>
                     </div>
-           
                 </Card.Text>
                 <Link to={`/`}>
                 <Button>BACK</Button>
             </Link>
             </Card.Body>
-
-
-        
         </Card>
     );
 };
 
 MovieView.propTypes = {
-    movies: PropTypes.shape({
+    movies: PropTypes.arrayOf(PropTypes.shape({
         title: PropTypes.string.isRequired,
         description: PropTypes.string.isRequired,
         genre: PropTypes.string.isRequired,
         director: PropTypes.string.isRequired,
         image: PropTypes.string.isRequired,
         featured: PropTypes.bool
-    }).isRequired,
-    onBackClick: PropTypes.func.isRequired
+}).isRequired)
 };
