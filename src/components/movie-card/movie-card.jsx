@@ -1,8 +1,24 @@
 import PropTypes from 'prop-types';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+import { Link } from 'react-router-dom';
 
-export const MovieCard = ({movie, onMovieClick}) => {
+export const MovieCard = ({movie, user, token, activeUser}) => {
+
+    const addFavorite = () => {
+        fetch(`https://myflix-12345.herokuapp.com/users/${user.Username}/movies/${movie.id}`, {
+            method: 'POST',
+            headers: { Authorization: `Bearer ${token}` }
+        });
+    };
+
+    const removeFavorite = () => {
+        fetch(`https://myflix-12345.herokuapp.com/users/${user.Username}/movies/${movie.id}`, {
+            method: 'DELETE',
+            headers: { Authorization: `Bearer ${token}` }
+        });
+    }
+
     return(
         <Card className="h-100">
             <Card.Img variant="top" src={movie.image} />
@@ -13,9 +29,15 @@ export const MovieCard = ({movie, onMovieClick}) => {
                     <br></br>
                     Genre: {movie.genre}
                 </Card.Text>
-                <Button onClick={() => {onMovieClick(movie)}} variant="link">OPEN</Button>
+                <Link to={`/movies/${encodeURIComponent(movie.id)}`}>
+                    <Button variant="link">OPEN</Button>
+                </Link>
+                {!activeUser.favorites.includes(movie.id) ? (
+                    <Button onClick={addFavorite}>Add favorite</Button>
+                ) : (
+                    <Button onClick={removeFavorite}>Remove favorite</Button>
+                )}
             </Card.Body>
-
         </Card>
     );
 };
@@ -28,6 +50,5 @@ MovieCard.propTypes = {
         director: PropTypes.string.isRequired,
         image: PropTypes.string.isRequired,
         featured: PropTypes.bool
-    }).isRequired,
-    onMovieClick: PropTypes.func.isRequired
+    }).isRequired
 };

@@ -1,0 +1,12 @@
+.dropdown-menu {
+    background-color: rgba(0, 0, 0, 0);
+    min-width: 1rem;
+}
+
+#dropdown-genre, #dropdown-director {
+    width: 100%;
+}
+
+.btn-primary {
+    --bs-btn-active-bg: #d10000;
+}
